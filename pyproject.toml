@@ -2,7 +2,7 @@
 name = "otus"
 version = "0.1.0"
 description = ""
-authors = ["Roman <r.serov@idaproject.com>"]
+authors = ["Roman Serov"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
