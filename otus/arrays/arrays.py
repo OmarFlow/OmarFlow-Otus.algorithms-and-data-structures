@@ -53,6 +53,10 @@ class SingleArray(ArrayAddMixin):
         if self.array:
             self.array = deepcopy(self.array)
 
+    def put(self, element):
+        self.resize()
+        self.array.append(element)
+
     def remove(self, index):
         deleted_item = self.array[index]
         del self.array[index]
@@ -159,30 +163,13 @@ class MatrixArray:
         return sum(1 if i is not None else 0 for i in self.container_array[self.current_container_array_index])
 
 
-ma = MatrixArray(3)
-
-for i in range(9):
-    ma.put(i)
-    #print(ma.container_array)
-
-ma.add("piz", 2)
-ma.add("sosi", 0)
-ma.add("xuy", 0)
-ma.add("Oo", 13)
-ma.add("ii", 1)
-ma.add(".!.", 14)
-ma.put("a")
-ma.add("b", 16)
-print(ma.container_array, "END")
-
-
-
-
-
-
-# ma.remove(5)
-# ma.remove(4)
-# ma.remove(3)
-# ma.put(11)
-# print(ma.container_array)
-# print(ma.get(3))
+if __name__ == "__main__":
+    from timeit import default_timer as timer
+    x = SingleArray()
+    for i in [1000, 10000, 100000, 1000000]:
+        start = timer()
+        for j in range(i):
+            x.put(j)
+        end = timer()
+        time_res = end - start
+        print(f"data - {i}, elapsed time - {time_res}")
