@@ -5,12 +5,10 @@ class IterativePrimes:
     """
     Итеративный способ
     """
-    def __init__(self, num):
-        self.num = num
 
-    def count_primes(self):
+    def count_primes(self, num):
         count = 0
-        for i in range(2, self.num+1):
+        for i in range(2, num+1):
             if self.is_prime(i):
                 count += 1
         return count
@@ -30,16 +28,20 @@ class IterativePrimes:
 
 class DivisionByPrimes:
     "С помощью деления на простые числа"
-    def __init__(self, num):
-        self.num = num
+    def __init__(self):
         self.primes = [2]
 
-    def count_primes(self):
+    def count_primes(self, num):
+        if num == 1:
+            return 0
+
         count = 1
-        for i in range(3, self.num+1):
+        for i in range(3, num+1):
             if self.is_prime(i):
                 count += 1
                 self.primes.append(i)
+        self.primes = [2]
+
         return count
 
     def is_prime(self, num):
@@ -48,6 +50,11 @@ class DivisionByPrimes:
                 return False
         return True
 
-j = DivisionByPrimes(1000)
-print(j.count_primes())
-print(j.primes)
+
+if __name__ == "__main__":
+    from otus.test_service import TestService
+    import os
+    pr = DivisionByPrimes()
+    tests_path = os.path.join(os.getcwd(), "test")
+    service = TestService(pr.count_primes, tests_path)
+    service.run_tests()
