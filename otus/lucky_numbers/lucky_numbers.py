@@ -1,5 +1,7 @@
-# Уровень джуниор
 def lucky_numbers_junior():
+    """
+    Итеративный способ
+    """
     count = 0
     for n1 in range(10):
         for n2 in range(10):
@@ -13,8 +15,10 @@ def lucky_numbers_junior():
                             count+=1
 
 
-# Уровень мидл
 class LuckyNumbersMiddle:
+    """
+    Рекурсивный способ
+    """
     def __init__(self):
         self.count = 0
 
@@ -29,8 +33,8 @@ class LuckyNumbersMiddle:
                 self.lucky_numbers(n - 1, sum_a + a, sum_b + b)
 
 
-# Уровень мидл+
 def lucky_numbers_middle_plus(amount_half_tickets):
+    "Использование возможного варианта сумм"
     possible_sum_of_numbers = {key: 0 for key in range(9 * amount_half_tickets + 1)}
     possible_numbers = int(str(1).ljust(amount_half_tickets + 1, "0"))
 
@@ -44,7 +48,6 @@ def lucky_numbers_middle_plus(amount_half_tickets):
 if __name__ == '__main__':
     from otus.test_service import TestService
     import os
-    # Уровень сеньйор(система тестирования)
     tests_path = os.path.join(os.getcwd(), "lucky_numbers", "test")
     service = TestService(lucky_numbers_middle_plus, tests_path)
     service.run_tests()
