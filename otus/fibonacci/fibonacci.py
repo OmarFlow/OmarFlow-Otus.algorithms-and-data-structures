@@ -1,4 +1,5 @@
 from math import sqrt, floor
+from decimal import Decimal
 
 
 def iterative_fibonacci(num):
@@ -35,8 +36,8 @@ def golden_fibonacci(num):
     """
     Использование золотого сечения
     """
-    f = (1 + sqrt(5)) / 2
-    fib = floor(f**num/sqrt(5) + 0.5)
+    f = Decimal((1 + sqrt(5)) / 2)
+    fib = floor(f**num/Decimal(sqrt(5)) + Decimal(0.5))
     return fib
 
 
