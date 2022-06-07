@@ -89,8 +89,7 @@ class FactorArray(ArrayAddMixin):
     def resize(self):
         if self.length == self.size:
             self.array = deepcopy(self.array)
-            for i in range(self.length):
-                self.array.append(None)
+            self.array.extend([None for _ in range(self.length)])
         if self.length > self.array_size:
             if self.length - self.size > int(self.length/2):
                 del self.array[int(-(self.length/2)):]
@@ -165,11 +164,11 @@ class MatrixArray:
 
 if __name__ == "__main__":
     from timeit import default_timer as timer
-    x = SingleArray()
+    x = MatrixArray(10)
     for i in [1000, 10000, 100000, 1000000]:
         start = timer()
         for j in range(i):
-            x.put(j)
+            x.add(j, 0)
         end = timer()
         time_res = end - start
         print(f"data - {i}, elapsed time - {time_res}")
