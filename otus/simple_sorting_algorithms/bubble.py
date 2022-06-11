@@ -1,4 +1,7 @@
 def bubble_sort(array):
+    """
+    Сортировка пузырьком
+    """
     for i in range(len(array)):
       swapped = False
       for j in range(len(array) - i):
