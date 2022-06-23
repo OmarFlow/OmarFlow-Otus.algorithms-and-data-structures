@@ -20,6 +20,8 @@ def binary_search(num, mas):
     while low <= high:
         mid = (low + high) // 2
         if mas[mid - 1] <= num <= mas[mid + 1]:
+            if num > mas[mid]:
+                return mid + 1
             return mid
 
         if num > mas[mid]:
@@ -40,24 +42,10 @@ def optimized_insert_sort(array):
                 array[j] = m
                 j -= 1
         else:
-            k = i
-            while j >= 0:
-                sorted_part = array[:i]
-                swap_index = binary_search(array[k], sorted_part)
-                if j != swap_index:
-                    m = array[swap_index]
-                    array[swap_index] = array[k]
-                    array[k] = m
-                    s_k = k
-                    j -= 1
-                    while array[s_k - 1] > array[s_k]:
-                        m = array[s_k - 1]
-                        array[s_k - 1] = array[s_k]
-                        array[s_k] = m
-                        s_k -= 1
-                else:
-                    k -= 1
-                    j -= 1
+            k = binary_search(array[i], sorted_part)
+            value = array[i]
+            del array[i]
+            array.insert(k, value)
     return array
 
 
@@ -72,7 +60,7 @@ if __name__ == "__main__":
 
     for i in a, b, c, d, e:
         start = timer()
-        insert_sort(i)
+        optimized_insert_sort(i)
         end = timer()
         print(end - start)
 

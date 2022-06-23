@@ -34,7 +34,7 @@ class QueueUnknownPriority:
             return
 
         for i in range(len(self.array)):
-            prio, value = self.array[i]
+            prio, _ = self.array[i]
             if priority_and_item[0] < prio:
                 self.array.insert(i, priority_and_item)
                 break
