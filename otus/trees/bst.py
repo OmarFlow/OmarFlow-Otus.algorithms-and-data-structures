@@ -84,6 +84,7 @@ class BST:
                 setattr(self.parent, self.parent_side, self.right)
             self.right.left = self.left
             self.left.parent = self.right
+            self.right.calculate_height()
             right = self.right
             self.remove_item()
             return right
@@ -145,6 +146,7 @@ class BST:
         self.left.parent = item
 
     def remove_item(self):
+        setattr(self.parent, self.parent_side, None)
         self.parent = None
         self.right = None
         self.left = None
