@@ -44,7 +44,6 @@ class MergeSort:
             self.array[i] = container.popleft()
 
 
-print(MergeSort([4,8,9,3,2, 90, 6,1,7,85]).sorting())
 if __name__ == "__main__":
     from random import randint
     from timeit import default_timer as timer
