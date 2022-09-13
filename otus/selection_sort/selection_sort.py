@@ -2,6 +2,7 @@ class SelectionSort:
     """
     Сортировка выбором
     """
+
     def __init__(self, array):
         self.array = array
         self.array_length = len(self.array) - 1
@@ -24,9 +25,11 @@ class SelectionSort:
             max = self.find_max(sort_border)
             self.swap(sort_border, max)
 
+
 if __name__ == "__main__":
     from random import randint
     from timeit import default_timer as timer
+
     a = [randint(1, 1000000) for _ in range(100)]
     b = [randint(1, 1000000) for _ in range(1000)]
     c = [randint(1, 1000000) for _ in range(10000)]
@@ -39,5 +42,3 @@ if __name__ == "__main__":
         ss.sorting()
         end = timer()
         print(end - start)
-
-

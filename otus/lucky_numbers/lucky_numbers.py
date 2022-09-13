@@ -12,13 +12,14 @@ def lucky_numbers_junior():
                     for n5 in range(10):
                         n6 = first3nums_sum - n4 - n5
                         if n6 >= 0 and n6 <= 9:
-                            count+=1
+                            count += 1
 
 
 class LuckyNumbersMiddle:
     """
     Рекурсивный способ
     """
+
     def __init__(self):
         self.count = 0
 
@@ -45,9 +46,10 @@ def lucky_numbers_middle_plus(amount_half_tickets):
     return sum(number_count**2 for number_count in possible_sum_of_numbers.values())
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     from otus.test_service import TestService
     import os
+
     tests_path = os.path.join(os.getcwd(), "lucky_numbers", "test")
     service = TestService(lucky_numbers_middle_plus, tests_path)
     service.run_tests()

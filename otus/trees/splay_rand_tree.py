@@ -1,3 +1,4 @@
+from random import randint
 from otus.trees.avl import AVL
 
 
@@ -5,6 +6,7 @@ class SplayTree(AVL):
     """
     Расширяющееся дерево
     """
+
     def insert(self, key):
         if self.is_root:
             self._insert(key)
@@ -69,7 +71,9 @@ class RandTree(AVL):
     """
     Рандомизированное дерево
     """
+
     size = 1
+
     def insert(self, key):
         if self.is_root:
             self._insert(key)

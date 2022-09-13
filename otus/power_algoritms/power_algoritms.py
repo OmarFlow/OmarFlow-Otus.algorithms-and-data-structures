@@ -6,7 +6,7 @@ def iterative_power(number, exponent):
     Итеративный способ
     """
     result = 1
-    for exp in range(1, exponent+1):
+    for exp in range(1, exponent + 1):
         result *= number
     return result
 
@@ -14,7 +14,7 @@ def iterative_power(number, exponent):
 def exponent_break_power(number, exponent):
     "C помощью разбивки степени"
     if exponent == 0:
-        return  1
+        return 1
     exp = floor(log2(exponent))
 
     value = number
@@ -52,8 +52,7 @@ def exponent_binary_break_power(number, exponent):
 if __name__ == "__main__":
     from otus.test_service import TestService
     import os
+
     tests_path = os.path.join(os.getcwd(), "test")
     service = TestService(iterative_power, tests_path)
     service.run_tests()
-
-

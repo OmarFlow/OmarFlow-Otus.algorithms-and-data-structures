@@ -2,6 +2,7 @@ class HeapSort:
     """
     Пирамидальная сортировка
     """
+
     def __init__(self, array):
         self.array = array
         self.array_length = len(self.array)
@@ -39,6 +40,7 @@ class HeapSort:
 if __name__ == "__main__":
     from random import randint
     from timeit import default_timer as timer
+
     a = [randint(1, 1000000) for _ in range(100)]
     b = [randint(1, 1000000) for _ in range(1000)]
     c = [randint(1, 1000000) for _ in range(10000)]

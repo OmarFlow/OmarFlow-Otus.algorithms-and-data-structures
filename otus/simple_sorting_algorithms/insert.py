@@ -1,9 +1,9 @@
 def insert_sort(array):
     for i in range(1, len(array)):
         j = i - 1
-        while j >= 0 and array[j] > array[j+1]:
-            m = array[j+1]
-            array[j+1] = array[j]
+        while j >= 0 and array[j] > array[j + 1]:
+            m = array[j + 1]
+            array[j + 1] = array[j]
             array[j] = m
             j -= 1
     return array
@@ -52,6 +52,7 @@ def optimized_insert_sort(array):
 if __name__ == "__main__":
     from random import randint
     from timeit import default_timer as timer
+
     a = [randint(1, 1000000) for _ in range(100)]
     b = [randint(1, 1000000) for _ in range(1000)]
     c = [randint(1, 1000000) for _ in range(10000)]
@@ -63,4 +64,3 @@ if __name__ == "__main__":
         optimized_insert_sort(i)
         end = timer()
         print(end - start)
-

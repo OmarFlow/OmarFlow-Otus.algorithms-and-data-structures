@@ -92,7 +92,9 @@ class BST:
             max_left_node = self.right.move_left()
             if max_left_node.right:
                 max_left_node.right.parent = max_left_node.parent
-                setattr(max_left_node.parent, max_left_node.parent_side, max_left_node.right)
+                setattr(
+                    max_left_node.parent, max_left_node.parent_side, max_left_node.right
+                )
                 self.swap_deleted_item(max_left_node)
                 max_left_node.calculate_height()
                 self.remove_item()
@@ -123,7 +125,13 @@ class BST:
         return sum(1 for i in [self.left, self.right] if i is not None)
 
     def calculate_height(self):
-        self.height = max(self.left.height if self.left else 0, self.right.height if self.right else 0) + 1
+        self.height = (
+            max(
+                self.left.height if self.left else 0,
+                self.right.height if self.right else 0,
+            )
+            + 1
+        )
 
     def move_left(self):
         left = self.left

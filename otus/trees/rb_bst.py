@@ -178,45 +178,66 @@ class RBBST:
             self.remove_controller()
 
     def remove_black_leaf_controller(self):
-        if (self.parent.color == Color.red and self.brother.color == Color.black and
-                self.brother.left.color == Color.black and self.brother.right.color == Color.black):
+        if (
+            self.parent.color == Color.red
+            and self.brother.color == Color.black
+            and self.brother.left.color == Color.black
+            and self.brother.right.color == Color.black
+        ):
             self.parent.color = Color.black
             self.brother.color = Color.red
             self.remove_item()
 
-        elif (self.parent.color == Color.red and self.brother.color == Color.black
-              and self.brother.left.color == Color.red):
+        elif (
+            self.parent.color == Color.red
+            and self.brother.color == Color.black
+            and self.brother.left.color == Color.red
+        ):
             self.brother.right_rotation()
             self.grandfather.color = Color.red
             self.uncle.color = Color.black
             self.remove_item()
 
-        elif (self.parent.color == Color.black and self.brother.color == Color.red and
-              self.brother.right.left.color == Color.black and self.brother.right.right.color == Color.black):
+        elif (
+            self.parent.color == Color.black
+            and self.brother.color == Color.red
+            and self.brother.right.left.color == Color.black
+            and self.brother.right.right.color == Color.black
+        ):
             self.brother.right_rotation()
             self.grandfather.color = Color.black
             self.brother.color = Color.red
             self.remove_item()
 
-        elif (self.parent.color == Color.black and self.brother.color == Color.red
-              and self.brother.right.left.color == Color.red):
+        elif (
+            self.parent.color == Color.black
+            and self.brother.color == Color.red
+            and self.brother.right.left.color == Color.red
+        ):
             self.brother.right.left_rotation()
             self.brother.right_rotation()
             self.uncle.right.color = Color.black
             self.remove_item()
 
-        elif (self.parent.color == Color.black and self.brother.color == Color.black
-              and self.brother.right.color == Color.red):
+        elif (
+            self.parent.color == Color.black
+            and self.brother.color == Color.black
+            and self.brother.right.color == Color.red
+        ):
             self.brother.right.left_rotation()
             self.brother.right_rotation()
             self.grandfather.color = Color.black
             self.remove_item()
 
-        elif (self.parent.color == Color.black and self.brother.color == Color.black and
-              self.brother.left.color == Color.black and self.brother.right.color == Color.black):
+        elif (
+            self.parent.color == Color.black
+            and self.brother.color == Color.black
+            and self.brother.left.color == Color.black
+            and self.brother.right.color == Color.black
+        ):
             self.brother.color = Color.red
             self.remove_item()
-            #to do
+            # to do
 
     def remove_red_leaf(self):
         setattr(self.parent, self.parent_side, RBBST.nil)
@@ -269,7 +290,7 @@ class RBBST:
             swap_item_left.parent = self
 
         if swap_item_right is RBBST.nil:
-           self.right = RBBST.nil
+            self.right = RBBST.nil
         else:
             self.right = swap_item_right
             swap_item_right.parent = self
@@ -343,4 +364,3 @@ class RBBST:
 
     def __str__(self):
         return str(self.values)
-

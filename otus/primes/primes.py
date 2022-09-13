@@ -8,7 +8,7 @@ class IterativePrimes:
 
     def count_primes(self, num):
         count = 0
-        for i in range(2, num+1):
+        for i in range(2, num + 1):
             if self.is_prime(i):
                 count += 1
         return count
@@ -20,7 +20,7 @@ class IterativePrimes:
         if num % 2 == 0:
             return False
 
-        for i in range(3, round(sqrt(num))+1, 2):
+        for i in range(3, round(sqrt(num)) + 1, 2):
             if num % i == 0:
                 return False
         return True
@@ -28,6 +28,7 @@ class IterativePrimes:
 
 class DivisionByPrimes:
     "С помощью деления на простые числа"
+
     def __init__(self):
         self.primes = [2]
 
@@ -36,7 +37,7 @@ class DivisionByPrimes:
             return 0
 
         count = 1
-        for i in range(3, num+1):
+        for i in range(3, num + 1):
             if self.is_prime(i):
                 count += 1
                 self.primes.append(i)
@@ -54,6 +55,7 @@ class DivisionByPrimes:
 if __name__ == "__main__":
     from otus.test_service import TestService
     import os
+
     pr = DivisionByPrimes()
     tests_path = os.path.join(os.getcwd(), "test")
     service = TestService(pr.count_primes, tests_path)

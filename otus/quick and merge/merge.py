@@ -40,13 +40,14 @@ class MergeSort:
             container.append(self.array[b])
             b += 1
 
-        for i in range(left, right+1):
+        for i in range(left, right + 1):
             self.array[i] = container.popleft()
 
 
 if __name__ == "__main__":
     from random import randint
     from timeit import default_timer as timer
+
     a = [randint(1, 1000000) for _ in range(100)]
     b = [randint(1, 1000000) for _ in range(1000)]
     c = [randint(1, 1000000) for _ in range(10000)]

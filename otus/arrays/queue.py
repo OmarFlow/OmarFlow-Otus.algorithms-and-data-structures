@@ -40,4 +40,3 @@ class QueueUnknownPriority:
                 break
             if i == len(self.array) - 1:
                 self.array.append(priority_and_item)
-

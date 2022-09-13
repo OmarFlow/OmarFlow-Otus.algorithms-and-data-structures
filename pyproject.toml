@@ -6,6 +6,7 @@ authors = ["Roman Serov"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
+pre-commit = "^2.20.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

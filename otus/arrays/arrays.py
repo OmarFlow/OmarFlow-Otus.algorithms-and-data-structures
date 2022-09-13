@@ -31,7 +31,6 @@ class ArrayAddMixin(ABC):
         self.resize()
         return deleted_item
 
-
     @property
     def length(self):
         return len(self.array)
@@ -74,7 +73,7 @@ class VectorArray(ArrayAddMixin):
             for i in range(self.vector):
                 self.array.append(None)
         if self.length - self.size > self.vector:
-            del self.array[-self.vector:]
+            del self.array[-self.vector :]
 
     def add(self, item, index):
         super().add(item, index)
@@ -91,8 +90,8 @@ class FactorArray(ArrayAddMixin):
             self.array = deepcopy(self.array)
             self.array.extend([None for _ in range(self.length)])
         if self.length > self.array_size:
-            if self.length - self.size > int(self.length/2):
-                del self.array[int(-(self.length/2)):]
+            if self.length - self.size > int(self.length / 2):
+                del self.array[int(-(self.length / 2)) :]
 
     def add(self, item, index):
         super().add(item, index)
@@ -159,11 +158,15 @@ class MatrixArray:
 
     @property
     def size(self):
-        return sum(1 if i is not None else 0 for i in self.container_array[self.current_container_array_index])
+        return sum(
+            1 if i is not None else 0
+            for i in self.container_array[self.current_container_array_index]
+        )
 
 
 if __name__ == "__main__":
     from timeit import default_timer as timer
+
     x = MatrixArray(10)
     for i in [1000, 10000, 100000, 1000000]:
         start = timer()

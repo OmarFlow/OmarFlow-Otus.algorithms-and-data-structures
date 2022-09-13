@@ -8,7 +8,9 @@ class TestService:
         self.cwd = cwd
 
     def get_test_data(self):
-        files = sorted(glob.glob(self.cwd + "/*.in"), key=lambda x: int(x.split(".")[1]))
+        files = sorted(
+            glob.glob(self.cwd + "/*.in"), key=lambda x: int(x.split(".")[1])
+        )
         data = []
 
         for file in files:
@@ -25,7 +27,9 @@ class TestService:
         return data
 
     def get_test_results(self):
-        files = sorted(glob.glob(self.cwd + "/*.out"), key=lambda x: int(x.split(".")[1]))
+        files = sorted(
+            glob.glob(self.cwd + "/*.out"), key=lambda x: int(x.split(".")[1])
+        )
         results = []
         for file in files:
             with open(file) as f:
@@ -44,7 +48,11 @@ class TestService:
             time = int(end - start)
 
             if my_res == result:
-                print(f"Test#{test_number}, test data - {data}, my result {my_res} == {result} its True\n Elapsed time {time}")
+                print(
+                    f"Test#{test_number}, test data - {data}, my result {my_res} == {result} its True\n Elapsed time {time}"
+                )
             else:
-                print(f"Test#{test_number}, test data - {data}, my result {my_res} != {result} its False\n Elapsed time {time}")
+                print(
+                    f"Test#{test_number}, test data - {data}, my result {my_res} != {result} its False\n Elapsed time {time}"
+                )
             test_number += 1

@@ -2,6 +2,7 @@ class BtreeNodeItem:
     """
     Элемент узла В дерева
     """
+
     def __init__(self, value):
         self.value = value
         self.left = None
@@ -18,6 +19,7 @@ class BtreeNode(list):
     """
     Узел B дерева
     """
+
     def __init__(self):
         super().__init__()
         self.length = BTree.array_size
@@ -27,6 +29,7 @@ class BTree:
     """
     B дерево
     """
+
     array_size = 2
     half_array_size = array_size // 2
 
@@ -34,7 +37,9 @@ class BTree:
         self.array = BtreeNode()
         self.parent = parent
         self.parent_item = parent_item
-        self.array.extend(elements if type(elements) is list else [BtreeNodeItem(elements)])
+        self.array.extend(
+            elements if type(elements) is list else [BtreeNodeItem(elements)]
+        )
 
     def get_intermediate_array(self, index, node_item):
         intermediate_array = [item for item in self.array]
@@ -70,7 +75,7 @@ class BTree:
 
         new_node_left = BTree(intermediate_array[:middle], new_node, new_node_item)
         new_node_item.left = new_node_left
-        self.array = intermediate_array[middle + 1:]
+        self.array = intermediate_array[middle + 1 :]
         self.parent = new_node
         self.parent_item = new_node_item
         new_node_item.right = self
@@ -360,7 +365,11 @@ class BTree:
         """
         Получение соседнего элемента
         """
-        return self.parent_item.left if self.parent_item.left != self else self.parent_item.right
+        return (
+            self.parent_item.left
+            if self.parent_item.left != self
+            else self.parent_item.right
+        )
 
     @property
     def parent_side(self):
