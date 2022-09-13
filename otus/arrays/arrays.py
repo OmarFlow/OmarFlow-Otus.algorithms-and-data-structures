@@ -73,7 +73,7 @@ class VectorArray(ArrayAddMixin):
             for i in range(self.vector):
                 self.array.append(None)
         if self.length - self.size > self.vector:
-            del self.array[-self.vector :]
+            del self.array[-self.vector:]
 
     def add(self, item, index):
         super().add(item, index)
@@ -91,7 +91,7 @@ class FactorArray(ArrayAddMixin):
             self.array.extend([None for _ in range(self.length)])
         if self.length > self.array_size:
             if self.length - self.size > int(self.length / 2):
-                del self.array[int(-(self.length / 2)) :]
+                del self.array[int(-(self.length / 2)):]
 
     def add(self, item, index):
         super().add(item, index)

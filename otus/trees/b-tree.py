@@ -73,9 +73,10 @@ class BTree:
                 self.parent.array.insert(index, new_node_item)
             new_node = self.parent
 
-        new_node_left = BTree(intermediate_array[:middle], new_node, new_node_item)
+        new_node_left = BTree(
+            intermediate_array[:middle], new_node, new_node_item)
         new_node_item.left = new_node_left
-        self.array = intermediate_array[middle + 1 :]
+        self.array = intermediate_array[middle + 1:]
         self.parent = new_node
         self.parent_item = new_node_item
         new_node_item.right = self
