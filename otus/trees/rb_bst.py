@@ -57,7 +57,9 @@ class RBBST:
         if self.parent.color == Color.red and self.uncle.color == Color.red:
             self.rebalance_red_uncle()
             self.grandfather.find_bad_balance()
-        elif self.parent.color == Color.red and self.uncle.color == Color.black:
+        elif (
+            self.parent.color == Color.red and self.uncle.color == Color.black
+        ):
             if self.prepare_rebalance_black_uncle():
                 grandpa_side = self.rotation()
                 self.color = Color.black

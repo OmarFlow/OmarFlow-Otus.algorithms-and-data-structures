@@ -93,7 +93,9 @@ class BST:
             if max_left_node.right:
                 max_left_node.right.parent = max_left_node.parent
                 setattr(
-                    max_left_node.parent, max_left_node.parent_side, max_left_node.right
+                    max_left_node.parent,
+                    max_left_node.parent_side,
+                    max_left_node.right,
                 )
                 self.swap_deleted_item(max_left_node)
                 max_left_node.calculate_height()

@@ -37,14 +37,17 @@ class LuckyNumbersMiddle:
 def lucky_numbers_middle_plus(amount_half_tickets):
     "Использование возможного варианта сумм"
     possible_sum_of_numbers = {
-        key: 0 for key in range(9 * amount_half_tickets + 1)}
+        key: 0 for key in range(9 * amount_half_tickets + 1)
+    }
     possible_numbers = int(str(1).ljust(amount_half_tickets + 1, "0"))
 
     for possible_number in range(possible_numbers):
         num = sum(int(n) for n in [sn for sn in str(possible_number)])
         possible_sum_of_numbers[num] += 1
 
-    return sum(number_count**2 for number_count in possible_sum_of_numbers.values())
+    return sum(
+        number_count**2 for number_count in possible_sum_of_numbers.values()
+    )
 
 
 if __name__ == "__main__":

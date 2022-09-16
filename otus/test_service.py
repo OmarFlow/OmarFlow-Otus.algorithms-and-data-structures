@@ -49,10 +49,12 @@ class TestService:
 
             if my_res == result:
                 print(
-                    f"Test#{test_number}, test data - {data}, my result {my_res} == {result} its True\n Elapsed time {time}"
+                    f"Test#{test_number}, test data - {data}, my result"
+                    f"{my_res} == {result} its True\n Elapsed time {time}"
                 )
             else:
                 print(
-                    f"Test#{test_number}, test data - {data}, my result {my_res} != {result} its False\n Elapsed time {time}"
+                    f"Test#{test_number}, test data - {data}, my result"
+                    f"{my_res} != {result} its False\n Elapsed time {time}"
                 )
             test_number += 1

@@ -142,7 +142,9 @@ class AVL(BST):
     @property
     def need_rebalance(self):
         another_side_height = self.get_another_side_height()
-        return all(False for i in [1, -1, 0] if i == self.height - another_side_height)
+        return all(
+            False for i in [1, -1, 0] if i == self.height - another_side_height
+        )
 
     def get_another_side(self):
         if self.key > self.parent.key:

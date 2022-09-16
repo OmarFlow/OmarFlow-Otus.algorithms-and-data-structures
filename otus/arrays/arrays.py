@@ -3,11 +3,18 @@ from copy import deepcopy
 from abc import ABC, abstractmethod
 
 
-class ArrayAddMixin(ABC):
+class ArrayMixin(ABC):
+    """
+    Набор часто-используемой логики массива
+    """
+
     def __init__(self):
         self.array = []
 
     def add(self, item, index):
+        """
+        Добавление элемента в определённую позицию
+        """
         self.resize()
         before_index = [self.array[i] for i in range(index)]
         before_index.append(item)
@@ -18,13 +25,22 @@ class ArrayAddMixin(ABC):
         self.array = before_index
 
     def get(self, index):
+        """
+        Получение элемента
+        """
         return self.array[index]
 
     def put(self, element):
+        """
+        Добавление элемента в конец
+        """
         self.resize()
         self.array[self.size] = element
 
     def remove(self, index):
+        """
+        Удаление элемента
+        """
         deleted_item = self.array[index]
         del self.array[index]
         self.array.append(None)
@@ -41,14 +57,21 @@ class ArrayAddMixin(ABC):
 
     @abstractmethod
     def resize(self):
+        """
+        Расширение массива
+        """
         ...
 
 
-class SingleArray(ArrayAddMixin):
-    def __init__(self):
-        super().__init__()
+class SingleArray(ArrayMixin):
+    """
+    Единичый массив.
+
+    При расширении увеличивает размер на 1.
+    """
 
     def resize(self):
+        # имитация расширения массива
         if self.array:
             self.array = deepcopy(self.array)
 
@@ -62,16 +85,24 @@ class SingleArray(ArrayAddMixin):
         return deleted_item
 
 
-class VectorArray(ArrayAddMixin):
+class VectorArray(ArrayMixin):
+    """
+    Векторный массив.
+
+    При расширении увеличивает размер на размер вектора.
+    """
+
     def __init__(self, vector):
         self.array = [None for _ in range(vector)]
         self.vector = vector
 
     def resize(self):
+        # имитация расширения массива
         if self.length == self.size:
             self.array = deepcopy(self.array)
             for i in range(self.vector):
                 self.array.append(None)
+        # уменьшение массива
         if self.length - self.size > self.vector:
             del self.array[-self.vector:]
 
@@ -80,22 +111,26 @@ class VectorArray(ArrayAddMixin):
         del self.array[-1]
 
 
-class FactorArray(ArrayAddMixin):
+class FactorArray(VectorArray):
+    """
+    Факторный массив.
+
+    При расширении увеличивает размер на текущий размер массива.
+    """
+
     def __init__(self, array_size):
         self.array_size = array_size
         self.array = [None for _ in range(array_size)]
 
     def resize(self):
+        # имитация расширения массива
         if self.length == self.size:
             self.array = deepcopy(self.array)
             self.array.extend([None for _ in range(self.length)])
+        # уменьшение массива
         if self.length > self.array_size:
             if self.length - self.size > int(self.length / 2):
                 del self.array[int(-(self.length / 2)):]
-
-    def add(self, item, index):
-        super().add(item, index)
-        del self.array[-1]
 
 
 class MatrixArray:
@@ -110,13 +145,13 @@ class MatrixArray:
                 del self.container_array[specific_array]
                 self.current_container_array_index -= 1
 
-        if self.size == self.array_size and not specific_array:
+        if self.current_array_size == self.array_size and not specific_array:
             self.current_container_array_index += 1
             self.container_array.append([None for _ in range(self.array_size)])
 
     def put(self, element):
         self.resize()
-        self.current_array[self.size] = element
+        self.current_array[self.current_array_size] = element
 
     def get(self, index):
         outer, inner = self.get_indexes(index)
@@ -157,21 +192,5 @@ class MatrixArray:
         return self.container_array[self.current_container_array_index]
 
     @property
-    def size(self):
-        return sum(
-            1 if i is not None else 0
-            for i in self.container_array[self.current_container_array_index]
-        )
-
-
-if __name__ == "__main__":
-    from timeit import default_timer as timer
-
-    x = MatrixArray(10)
-    for i in [1000, 10000, 100000, 1000000]:
-        start = timer()
-        for j in range(i):
-            x.add(j, 0)
-        end = timer()
-        time_res = end - start
-        print(f"data - {i}, elapsed time - {time_res}")
+    def current_array_size(self):
+        return sum(1 if i is not None else 0 for i in self.current_array)
