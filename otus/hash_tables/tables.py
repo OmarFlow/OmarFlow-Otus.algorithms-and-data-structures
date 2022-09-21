@@ -1,42 +1,19 @@
 from dataclasses import dataclass
-from functools import wraps
-from typing import Hashable, Any, Optional, List, Callable, Generator
+from typing import Hashable, Any, Optional, List, Generator
 
-THRESHOLD_FACTOR = 0.75
+from otus.hash_tables.utils import check_key_hashable, KeyDoesNotExist
 
-
-class KeyDoesNotExist(Exception):
-    """
-    Выкидывается, когда ключа нет в таблице
-    """
-
-    def __init__(self):
-        super().__init__(*("the key does not exist",))
-
-
-def check_key_hashable(func: Callable) -> Callable:
-    """
-    Проверка хэшируемости ключа
-    """
-    @wraps(func)
-    def wr(*args: tuple) -> Callable:
-        key: Hashable = args[1]
-        if not isinstance(key, Hashable):
-            raise Exception("key must be hashable")
-        elif key is None:
-            raise Exception("None not permitted as key")
-        return func(*args)
-    return wr
+THRESHOLD_FACTOR = 0.5
 
 
 @dataclass
-class HashTableEntry:
+class HashTableChainEntry:
     """
     Элемент хэш-таблицы
     """
     key: Hashable
     value: Any
-    next_entry: Optional['HashTableEntry'] = None
+    next_entry: Optional['HashTableChainEntry'] = None
 
     def is_key_equals(self, key: Hashable) -> bool:
         return self.key == key
@@ -47,37 +24,37 @@ class HashTableChain:
     Хэш-таблица, использующая метод цепочек
     """
 
-    table_size: int = 1
+    table_size: int = 4
     threshold: float = table_size * THRESHOLD_FACTOR
     size: int = 0
 
     def __init__(self):
-        self.array: List[Optional[HashTableEntry]] = self.create_array()
+        self.array: List[Optional[HashTableChainEntry]] = self.create_array()
 
     @check_key_hashable
     def __getitem__(self, key: Hashable) -> Any:
-        first_entry_in_bucket: Optional[HashTableEntry] = self.get_first_entry_in_bucket(
+        first_entry_in_bucket: Optional[HashTableChainEntry] = self.get_first_entry_in_bucket(
             key)
-        entry: HashTableEntry = HashTableChain.find_key_in_bucket(
+        entry: HashTableChainEntry = HashTableChain.find_key_in_bucket(
             first_entry_in_bucket, key)
         return entry.value
 
     @check_key_hashable
     def __setitem__(self, key: Hashable, value: Any) -> None:
-        first_entry_in_bucket: Optional[HashTableEntry] = self.get_first_entry_in_bucket(
+        first_entry_in_bucket: Optional[HashTableChainEntry] = self.get_first_entry_in_bucket(
             key)
         idx: int = HashTableChain.hash(key)
 
         # если ключ уже существует, меняем значение
         try:
-            entry: HashTableEntry = HashTableChain.find_key_in_bucket(
+            entry: HashTableChainEntry = HashTableChain.find_key_in_bucket(
                 first_entry_in_bucket, key)
             entry.value = value
             return
         except KeyDoesNotExist:
             # иначе создаём запись и добавляем в ведро
             self.rehash()
-            new_entry: HashTableEntry = HashTableEntry(
+            new_entry: HashTableChainEntry = HashTableChainEntry(
                 key, value, next_entry=first_entry_in_bucket if first_entry_in_bucket else None)
             self.array[idx] = new_entry
             HashTableChain.size += 1
@@ -88,10 +65,10 @@ class HashTableChain:
         """
         Удаление записи
         """
-        first_entry_in_bucket: Optional[HashTableEntry] = self.get_first_entry_in_bucket(
+        first_entry_in_bucket: Optional[HashTableChainEntry] = self.get_first_entry_in_bucket(
             key)
         # собираем массив из ведра, для удобства удаления
-        bucket: List[HashTableEntry] = [
+        bucket: List[HashTableChainEntry] = [
             e for e in HashTableChain.bucket_generator(first_entry_in_bucket)]
         idx: int = HashTableChain.hash(key)
 
@@ -147,7 +124,8 @@ class HashTableChain:
         return hash_code % HashTableChain.table_size
 
     @staticmethod
-    def bucket_generator(first_entry_in_bucket: Optional[HashTableEntry]) -> Generator[HashTableEntry, None, None]:
+    def bucket_generator(first_entry_in_bucket: Optional[HashTableChainEntry]) \
+            -> Generator[HashTableChainEntry, None, None]:
         """
         Генератор ведра
         """
@@ -157,7 +135,7 @@ class HashTableChain:
             entry = entry.next_entry
 
     @staticmethod
-    def find_key_in_bucket(first_entry_in_bucket: Optional[HashTableEntry], key: Hashable) -> HashTableEntry:
+    def find_key_in_bucket(first_entry_in_bucket: Optional[HashTableChainEntry], key: Hashable) -> HashTableChainEntry:
         """
         Возвращает запись, если ключ найден, иначе выкидывается исключение
         """
@@ -177,7 +155,7 @@ class HashTableChain:
         Рехэширование
         """
         self.__class__.change_size_and_threshold()
-        old_array: List[Optional[HashTableEntry]] = self.array
+        old_array: List[Optional[HashTableChainEntry]] = self.array
         self.array = self.create_array()  # type: ignore
 
         for bucket in old_array:
@@ -186,12 +164,12 @@ class HashTableChain:
                 self[entry.key] = entry.value
                 entry = entry.next_entry
 
-    def get_first_entry_in_bucket(self, key: Hashable) -> Optional[HashTableEntry]:
+    def get_first_entry_in_bucket(self, key: Hashable) -> Optional[HashTableChainEntry]:
         """
         Получение первой записи ведра
         """
         idx: int = HashTableChain.hash(key)
-        first_entry: Optional[HashTableEntry] = self.array[idx]
+        first_entry: Optional[HashTableChainEntry] = self.array[idx]
         return first_entry
 
     def create_array(self) -> List[None]:
