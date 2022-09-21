@@ -123,7 +123,6 @@ class HashTableOpenAddress:
         """
         Рехэширование
         """
-        "!!!"
         self.__class__.change_size_and_threshold()
         old_array: List[Optional[HashTableOpenAddressEntry]] = self.array
         self.array = self.create_array()  # type: ignore
