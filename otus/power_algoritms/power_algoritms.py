@@ -1,7 +1,7 @@
 from math import log2, floor
 
 
-def iterative_power(number, exponent):
+def iterative_power(number: int, exponent: int) -> int:
     """
     Итеративный способ
     """
@@ -11,7 +11,7 @@ def iterative_power(number, exponent):
     return result
 
 
-def exponent_break_power(number, exponent):
+def exponent_break_power(number: int, exponent: int) -> int:
     "C помощью разбивки степени"
     if exponent == 0:
         return 1
@@ -29,7 +29,7 @@ def exponent_break_power(number, exponent):
     return value
 
 
-def exponent_binary_break_power(number, exponent):
+def exponent_binary_break_power(number: int, exponent: int) -> int:
     """
     C помощью бинарной разбивки степени
     """

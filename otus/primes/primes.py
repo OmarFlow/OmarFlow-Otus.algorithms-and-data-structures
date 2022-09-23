@@ -6,14 +6,14 @@ class IterativePrimes:
     Итеративный способ
     """
 
-    def count_primes(self, num):
+    def count_primes(self, num: int) -> int:
         count = 0
         for i in range(2, num + 1):
             if self.is_prime(i):
                 count += 1
         return count
 
-    def is_prime(self, num):
+    def is_prime(self, num: int) -> int:
         if num == 2:
             return True
 
@@ -32,7 +32,7 @@ class DivisionByPrimes:
     def __init__(self):
         self.primes = [2]
 
-    def count_primes(self, num):
+    def count_primes(self, num: int) -> int:
         if num == 1:
             return 0
 
@@ -45,7 +45,7 @@ class DivisionByPrimes:
 
         return count
 
-    def is_prime(self, num):
+    def is_prime(self, num: int):
         for i in self.primes:
             if num % i == 0:
                 return False

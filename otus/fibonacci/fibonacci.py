@@ -2,7 +2,7 @@ from math import sqrt, floor
 from decimal import Decimal
 
 
-def iterative_fibonacci(num):
+def iterative_fibonacci(num: int) -> int:
     """
     Итеративный способ
     """
@@ -23,7 +23,7 @@ def iterative_fibonacci(num):
     return f
 
 
-def recursive_fibonacci(num):
+def recursive_fibonacci(num: int) -> int:
     """
     Рекурсивный способ
     """
@@ -32,7 +32,7 @@ def recursive_fibonacci(num):
     return recursive_fibonacci(num - 1) + recursive_fibonacci(num - 2)
 
 
-def golden_fibonacci(num):
+def golden_fibonacci(num: int) -> int:
     """
     Использование золотого сечения
     """

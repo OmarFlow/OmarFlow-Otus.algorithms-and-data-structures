@@ -1,4 +1,4 @@
-def lucky_numbers_junior():
+def lucky_numbers_junior() -> int:
     """
     Итеративный способ
     """
@@ -13,6 +13,7 @@ def lucky_numbers_junior():
                         n6 = first3nums_sum - n4 - n5
                         if n6 >= 0 and n6 <= 9:
                             count += 1
+    return count
 
 
 class LuckyNumbersMiddle:
@@ -23,7 +24,7 @@ class LuckyNumbersMiddle:
     def __init__(self):
         self.count = 0
 
-    def lucky_numbers(self, n, sum_a, sum_b):
+    def lucky_numbers(self, n, sum_a: int, sum_b: int) -> None:
         if n == 0:
             if sum_a == sum_b:
                 self.count += 1
@@ -34,7 +35,7 @@ class LuckyNumbersMiddle:
                 self.lucky_numbers(n - 1, sum_a + a, sum_b + b)
 
 
-def lucky_numbers_middle_plus(amount_half_tickets):
+def lucky_numbers_middle_plus(amount_half_tickets: int) -> int:
     "Использование возможного варианта сумм"
     possible_sum_of_numbers = {
         key: 0 for key in range(9 * amount_half_tickets + 1)

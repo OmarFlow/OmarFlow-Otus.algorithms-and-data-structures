@@ -1,6 +1,7 @@
 import copy
 from copy import deepcopy
 from abc import ABC, abstractmethod
+from typing import List, Any, Tuple
 
 
 class ArrayMixin(ABC):
@@ -9,9 +10,9 @@ class ArrayMixin(ABC):
     """
 
     def __init__(self):
-        self.array = []
+        self.array: List[Any] = []
 
-    def add(self, item, index):
+    def add(self, item: Any, index: int) -> None:
         """
         Добавление элемента в определённую позицию
         """
@@ -24,20 +25,20 @@ class ArrayMixin(ABC):
 
         self.array = before_index
 
-    def get(self, index):
+    def get(self, index: int) -> Any:
         """
         Получение элемента
         """
         return self.array[index]
 
-    def put(self, element):
+    def put(self, element: Any) -> None:
         """
         Добавление элемента в конец
         """
         self.resize()
         self.array[self.size] = element
 
-    def remove(self, index):
+    def remove(self, index: int) -> int:
         """
         Удаление элемента
         """
@@ -48,15 +49,15 @@ class ArrayMixin(ABC):
         return deleted_item
 
     @property
-    def length(self):
+    def length(self) -> int:
         return len(self.array)
 
     @property
-    def size(self):
+    def size(self) -> int:
         return sum(1 if i is not None else 0 for i in self.array)
 
     @abstractmethod
-    def resize(self):
+    def resize(self) -> None:
         """
         Расширение массива
         """
@@ -70,16 +71,16 @@ class SingleArray(ArrayMixin):
     При расширении увеличивает размер на 1.
     """
 
-    def resize(self):
+    def resize(self) -> None:
         # имитация расширения массива
         if self.array:
             self.array = deepcopy(self.array)
 
-    def put(self, element):
+    def put(self, element: Any) -> None:
         self.resize()
         self.array.append(element)
 
-    def remove(self, index):
+    def remove(self, index: int) -> Any:
         deleted_item = self.array[index]
         del self.array[index]
         return deleted_item
@@ -92,11 +93,11 @@ class VectorArray(ArrayMixin):
     При расширении увеличивает размер на размер вектора.
     """
 
-    def __init__(self, vector):
-        self.array = [None for _ in range(vector)]
-        self.vector = vector
+    def __init__(self, vector: int):
+        self.array: List[Any] = [None for _ in range(vector)]
+        self.vector: int = vector
 
-    def resize(self):
+    def resize(self) -> None:
         # имитация расширения массива
         if self.length == self.size:
             self.array = deepcopy(self.array)
@@ -106,7 +107,7 @@ class VectorArray(ArrayMixin):
         if self.length - self.size > self.vector:
             del self.array[-self.vector:]
 
-    def add(self, item, index):
+    def add(self, item, index) -> None:
         super().add(item, index)
         del self.array[-1]
 
@@ -118,11 +119,11 @@ class FactorArray(VectorArray):
     При расширении увеличивает размер на текущий размер массива.
     """
 
-    def __init__(self, array_size):
+    def __init__(self, array_size: int):
         self.array_size = array_size
         self.array = [None for _ in range(array_size)]
 
-    def resize(self):
+    def resize(self) -> None:
         # имитация расширения массива
         if self.length == self.size:
             self.array = deepcopy(self.array)
@@ -166,7 +167,7 @@ class MatrixArray:
         self.resize(outer)
         return element
 
-    def add(self, item, index):
+    def add(self, item: Any, index: int) -> None:
         outer, inner = self.get_indexes(index)
         container_array_copy = copy.deepcopy(self.container_array)
         self.container_array = [[None for _ in range(self.array_size)]]
@@ -181,16 +182,25 @@ class MatrixArray:
                     self.put(item)
                 self.put(container_array_copy[i][j])
 
-    def is_empty_array(self, array_index):
+    def is_empty_array(self, array_index: int) -> bool:
         return all(i is None for i in self.container_array[array_index])
 
-    def get_indexes(self, index):
+    def get_indexes(self, index: int) -> Tuple[int, int]:
+        """
+        Внтуренний и внешний индекс
+        """
         return index // self.array_size, index % self.array_size
 
     @property
-    def current_array(self):
+    def current_array(self) -> List:
+        """
+        Текущий массив
+        """
         return self.container_array[self.current_container_array_index]
 
     @property
-    def current_array_size(self):
+    def current_array_size(self) -> int:
+        """
+        Размер текущего массива
+        """
         return sum(1 if i is not None else 0 for i in self.current_array)

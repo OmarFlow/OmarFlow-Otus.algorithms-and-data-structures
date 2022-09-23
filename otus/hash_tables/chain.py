@@ -24,7 +24,7 @@ class HashTableChain:
     Хэш-таблица, использующая метод цепочек
     """
 
-    table_size: int = 4
+    table_size: int = 10000
     threshold: float = table_size * THRESHOLD_FACTOR
     size: int = 0
 

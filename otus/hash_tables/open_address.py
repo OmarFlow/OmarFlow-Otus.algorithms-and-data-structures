@@ -24,7 +24,7 @@ class HashTableOpenAddress:
     Хэш-таблица, реализованная методом открытой адресации
     """
 
-    table_size: int = 20
+    table_size: int = 50000
     table_size_for_hash: int = table_size - 1
     threshold: float = table_size * THRESHOLD_FACTOR
     size: int = 0
@@ -85,10 +85,14 @@ class HashTableOpenAddress:
         """
         Получение хэш кода
         """
-        h: int = len(key) % 256  # type: ignore
-        for letter in str(key):
-            h = HashTableOpenAddress.table[(h ^ ord(letter)) % 256]
-        return abs(h)
+        hh = []
+        for i in range(7):
+            h = HashTableOpenAddress.table[(
+                ord(key[0]) + i) % 256]  # type: ignore
+            for letter in str(key):
+                h = HashTableOpenAddress.table[h ^ ord(letter)]
+            hh.append(h)
+        return sum(hh)
 
     @staticmethod
     def hash(key: Hashable, probing_factor: int) -> int:
