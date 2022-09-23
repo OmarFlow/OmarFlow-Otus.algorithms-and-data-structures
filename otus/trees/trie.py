@@ -34,7 +34,7 @@ class Trie:
             node = node.get_node(letter)  # type: ignore
         return node.value
 
-    def remove(self, word: str):
+    def remove(self, word: str) -> None:
         """
         Удаление ключа в дереве
         """
