@@ -1,1 +1,1 @@
-# OmarFlow-Otus.algorithms-and-data-structures
+# Курс по структурам данных и алгоритмам от Otus
