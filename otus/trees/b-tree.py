@@ -1,12 +1,15 @@
+from typing import Optional, Union, List, Tuple
+
+
 class BtreeNodeItem:
     """
     Элемент узла В дерева
     """
 
-    def __init__(self, value):
-        self.value = value
-        self.left = None
-        self.right = None
+    def __init__(self, value: int):
+        self.value: int = value
+        self.left: Optional[BTree] = None
+        self.right: Optional[BTree] = None
 
     @property
     def has_childrens(self):
@@ -15,7 +18,7 @@ class BtreeNodeItem:
         return False
 
 
-class BtreeNode(list):
+class BtreeNodeArray(list):
     """
     Узел B дерева
     """
@@ -30,33 +33,42 @@ class BTree:
     B дерево
     """
 
-    array_size = 2
-    half_array_size = array_size // 2
+    array_size: int = 2
+    half_array_size: int = array_size // 2
 
-    def __init__(self, elements, parent=None, parent_item=None):
-        self.array = BtreeNode()
+    def __init__(self, elements: Union[List, int],
+                 parent: Optional['BTree'] = None,
+                 parent_item: Optional[BtreeNodeItem] = None
+                 ):
+        self.array = BtreeNodeArray()
         self.parent = parent
         self.parent_item = parent_item
         self.array.extend(
             elements if type(elements) is list else [BtreeNodeItem(elements)]
         )
 
-    def get_intermediate_array(self, index, node_item):
+    def get_intermediate_array(self, index: int, node_item: BtreeNodeItem) -> List[BtreeNodeItem]:
+        """
+        Промежуточный массив для вставки элемента в заполненную ноду
+        """
         intermediate_array = [item for item in self.array]
         intermediate_array.insert(index, node_item)
         return intermediate_array
 
-    def get_intermediate_array_middle(self, intermediate_array):
+    def get_intermediate_array_middle(self, intermediate_array: List[BtreeNodeItem]):
+        """
+        Средний элемент промежуточного массива
+        """
         middle = len(intermediate_array) // 2
         return middle
 
-    def put_in_full_array(self, item, index):
+    def put_in_full_array(self, item: BtreeNodeItem, index: int) -> None:
         """
         Вставка элемента в заполненную ноду
         """
         intermediate_array = self.get_intermediate_array(index, item)
         middle = self.get_intermediate_array_middle(intermediate_array)
-        middle_value = self.array[middle].value
+        middle_value: int = self.array[middle].value
         parent_is_full = None if self.is_root else self.parent.is_full
 
         if self.parent is None:
@@ -85,13 +97,16 @@ class BTree:
         if parent_is_full:
             self.parent.put_in_full_array(new_node_item, index)
 
-    def put(self, item):
-        root = self.move_to_root()
+    def put(self, item: int) -> None:
+        """
+        Основной метод вставки элемента
+        """
+        root: BTree = self.move_to_root()
         root._put(item)
 
-    def _put(self, item):
+    def _put(self, item: int):
         index, side = self.binary_search(item)
-        node_item = BtreeNodeItem(item)
+        node_item: BtreeNodeItem = BtreeNodeItem(item)
 
         if self.check_link(index, side):
             # если есть ссылка на дочерний элемент, проваливаемся в него
@@ -104,7 +119,7 @@ class BTree:
                 self.array.insert(index, node_item)
                 return
 
-    def remove(self, item):
+    def remove(self, item: int) -> None:
         """
         Основной метод удаления элемента из дерева
         """
@@ -117,11 +132,12 @@ class BTree:
         node, item = res
         node.remove_controller(item)
 
-    def remove_controller(self, item):
+    def remove_controller(self, item: BtreeNodeItem) -> None:
         """
         Контроллер удаления элемента из дерева
         """
         if self.is_leaf:
+            # если нода - лист
             if self.allow_delete_item:
                 self.array.remove(item)
             else:
@@ -131,9 +147,13 @@ class BTree:
                 else:
                     self.swap_items_when_brother_not_allow_delete(item)
         else:
+            # если нода - не лист
             self.remove_item_from_not_leaf_node(item)
 
-    def remove_item_from_not_leaf_node(self, item):
+    def remove_item_from_not_leaf_node(self, item: BtreeNodeItem):
+        """
+        Удаление элемента из не листовой ноды
+        """
         left = item.left
         right = item.right
 
@@ -168,7 +188,10 @@ class BTree:
                     left.left = new_node
                     new_node.parent_item = left
 
-    def swap_items_when_brother_not_allow_delete(self, item):
+    def swap_items_when_brother_not_allow_delete(self, item: BtreeNodeItem) -> None:
+        """
+        Перемещение элементов, когда у брата не доступно удаление элементов
+        """
         parent_item_index = self.parent.array.index(self.parent_item)
         parent_side = self.parent_side
         try:
@@ -198,7 +221,10 @@ class BTree:
             left.left = self
             self.parent_item = left
 
-    def swap_items_when_brother_allow_delete(self):
+    def swap_items_when_brother_allow_delete(self) -> None:
+        """
+        Перемещение элементов, когда у брата доступно удаление элементов
+        """
         if self.parent_side == "left":
             index = 0
         else:
@@ -207,7 +233,7 @@ class BTree:
         self.parent_item.value = self.brother.array[index].value
         del self.brother.array[index]
 
-    def search(self, num):
+    def search(self, num) -> Optional[int]:
         """
         Основной метод поиска элемента
         """
@@ -218,7 +244,7 @@ class BTree:
         _, item = res
         return item.value
 
-    def _search(self, num):
+    def _search(self, num: int) -> Optional[Tuple['BTree', BtreeNodeItem]]:
         """
         Поиск элемента
         """
@@ -242,7 +268,7 @@ class BTree:
                     return i.left._search(num)
                 continue
 
-    def parent_binary_search(self, num):
+    def parent_binary_search(self, num: int) -> int:
         """
         Поиск для вставки элемента в родительской ноде
         """
@@ -276,7 +302,7 @@ class BTree:
             if num < self.array[mid].value:
                 high = mid - 1
 
-    def binary_search(self, num):
+    def binary_search(self, num: int) -> Tuple[int, str]:
         """
         Поиск для вставки или дальнейшего поиска позиции для элемента
         """
@@ -295,14 +321,14 @@ class BTree:
         if len(self.array) == 2:
             if num > self.array[1].value:
                 if self.check_link(1, "right"):
-                    return (1, "right")
+                    return 1, "right"
                 else:
-                    return (2, "stub")
+                    return 2, "stub"
 
             elif num < self.array[0].value:
-                return (0, "left")
+                return 0, "left"
             else:
-                return (1, "left")
+                return 1, "left"
 
         while low <= high:
             mid = (low + high) // 2
@@ -317,7 +343,7 @@ class BTree:
             if num < self.array[mid].value:
                 high = mid - 1
 
-    def check_link(self, index, child_side):
+    def check_link(self, index: int, child_side: str) -> bool:
         """
         Проверка наличия у элемента ссылки на дочерний элемент
         """
@@ -329,7 +355,10 @@ class BTree:
         else:
             return True
 
-    def move_to_root(self):
+    def move_to_root(self) -> 'BTree':
+        """
+        Передвижение к корню
+        """
         if self.is_root:
             return self
         root = self.parent
@@ -338,21 +367,33 @@ class BTree:
         return root
 
     @property
-    def is_root(self):
+    def is_root(self) -> bool:
+        """
+        Является ли нода корнем
+        """
         if self.parent:
             return False
         return True
 
     @property
-    def is_full(self):
+    def is_full(self) -> bool:
+        """
+        Полная ли нода
+        """
         return len(self.array) == BTree.array_size
 
     @property
-    def is_leaf(self):
+    def is_leaf(self) -> bool:
+        """
+        Является ли нода листком
+        """
         return all(not item.has_childrens for item in self.array)
 
     @property
-    def values(self):
+    def values(self) -> List[int]:
+        """
+        Элементы ноды
+        """
         return [i.value for i in self.array]
 
     @property
@@ -363,7 +404,7 @@ class BTree:
         return len(self.array) > BTree.half_array_size
 
     @property
-    def brother(self):
+    def brother(self) -> Optional['BTree']:
         """
         Получение соседнего элемента
         """
@@ -374,7 +415,7 @@ class BTree:
         )
 
     @property
-    def parent_side(self):
+    def parent_side(self) -> str:
         """
         Определение своей стороны у родителя
         """

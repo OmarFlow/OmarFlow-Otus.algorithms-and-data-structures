@@ -1,53 +1,56 @@
+from typing import List, Any
+
 from otus.simple_sorting_algorithms.bubble import bubble_sort
 
 
 class SortArray:
-    def __init__(self):
-        self.array = []
+    """
+    Массив для блочной сортировки.
 
-    def append(self, item):
+    Автоматически сортирует блок.
+    """
+
+    def __init__(self):
+        self.array: List = []
+
+    def append(self, item: Any) -> None:
         self.array.append(item)
         if len(self.array) > 1:
             self.array = bubble_sort(self.array)
 
 
 class BucketSort:
-    def __init__(self, array):
-        self.array = array
-        self.max = self.find_max() + 1
-        self.len = len(array)
-        self.work_array = [SortArray() for _ in range(len(self.array))]
-        self.result_array = []
+    """
+    Блочная сортировка
 
-    def find_max(self):
+    Сложность - n. Стабильный. Не адаптивный. Онлайн, если известен максимальный элеменет.
+    """
+
+    def __init__(self, array: List):
+        self.array: List = array
+        self.max: int = self.find_max() + 1
+        self.len: int = len(array)
+        self.work_array: List[SortArray] = [SortArray()
+                                            for _ in range(len(self.array))]
+        self.result_array: List = []
+
+    def find_max(self) -> int:
+        """
+        Нахождение максимального числа
+        """
         max = 0
         for i in self.array:
             if i > max:
                 max = i
         return max
 
-    def sorting(self):
+    def sorting(self) -> None:
+        """
+        Сортировка
+        """
         for i in self.array:
             index = i * self.len // self.max
             self.work_array[index].append(i)
 
         for i in self.work_array:
             self.result_array.extend(i.array)
-
-
-if __name__ == "__main__":
-    from random import randint
-    from timeit import default_timer as timer
-
-    a = [randint(1, 1000000) for _ in range(100)]
-    b = [randint(1, 1000000) for _ in range(1000)]
-    c = [randint(1, 1000000) for _ in range(10000)]
-    d = [randint(1, 1000000) for _ in range(100000)]
-    e = [randint(1, 1000000) for _ in range(1000000)]
-
-    for i in a, b, c, d, e:
-        ss = BucketSort(i)
-        start = timer()
-        ss.sorting()
-        end = timer()
-        print(end - start)

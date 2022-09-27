@@ -1,26 +1,42 @@
 from collections import deque
+from typing import List
 
 
 class MergeSort:
-    def __init__(self, array):
-        self.array = array
+    """
+    Сортировка слиянием
 
-    def sorting(self):
+    Сложность - nlogn. Не стабильный. Не адаптивный. Не онлайн.
+    """
+
+    def __init__(self, array: List):
+        self.array: List = array
+
+    def sorting(self) -> List:
+        """
+        Основной метод сортировки
+        """
         self.sort(0, len(self.array) - 1)
         return self.array
 
-    def sort(self, left, right):
+    def sort(self, left: int, right: int) -> None:
+        """
+        Сортировка
+        """
         if left >= right:
             return
 
-        middle = (left + right) // 2
+        middle: int = (left + right) // 2
 
         self.sort(left, middle)
         self.sort(middle + 1, right)
         self.merge(left, middle, right)
 
-    def merge(self, left, middle, right):
-        container = deque()
+    def merge(self, left: int, middle: int, right: int) -> None:
+        """
+        Слияние
+        """
+        container: deque = deque()
         a = left
         b = middle + 1
 
@@ -42,20 +58,3 @@ class MergeSort:
 
         for i in range(left, right + 1):
             self.array[i] = container.popleft()
-
-
-if __name__ == "__main__":
-    from random import randint
-    from timeit import default_timer as timer
-
-    a = [randint(1, 1000000) for _ in range(100)]
-    b = [randint(1, 1000000) for _ in range(1000)]
-    c = [randint(1, 1000000) for _ in range(10000)]
-    d = [randint(1, 1000000) for _ in range(100000)]
-    e = [randint(1, 1000000) for _ in range(1000000)]
-
-    for i in a, b, c, d, e:
-        start = timer()
-        MergeSort(i).sorting()
-        end = timer()
-        print(end - start)

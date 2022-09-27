@@ -14,7 +14,7 @@ class ArrayMixin(ABC):
 
     def add(self, item: Any, index: int) -> None:
         """
-        Добавление элемента в определённую позицию
+        Добавление элемента в определённый индекс
         """
         self.resize()
         before_index = [self.array[i] for i in range(index)]
@@ -135,12 +135,18 @@ class FactorArray(VectorArray):
 
 
 class MatrixArray:
-    def __init__(self, array_size):
-        self.array_size = array_size
-        self.current_container_array_index = 0
-        self.container_array = [[None for _ in range(array_size)]]
+    """
+    Матричный массив.
 
-    def resize(self, specific_array=None):
+    При расширении добавляет новый массив.
+    """
+
+    def __init__(self, array_size):
+        self.array_size: int = array_size
+        self.current_container_array_index: int = 0
+        self.container_array: List = [[None for _ in range(array_size)]]
+
+    def resize(self, specific_array: int = None) -> None:
         if specific_array:
             if self.is_empty_array(specific_array):
                 del self.container_array[specific_array]
@@ -150,17 +156,26 @@ class MatrixArray:
             self.current_container_array_index += 1
             self.container_array.append([None for _ in range(self.array_size)])
 
-    def put(self, element):
+    def put(self, element: Any) -> None:
+        """
+        Добавление элемента в конец
+        """
         self.resize()
         self.current_array[self.current_array_size] = element
 
-    def get(self, index):
+    def get(self, index: int) -> Any:
+        """
+        Получение элемента
+        """
         outer, inner = self.get_indexes(index)
         return self.container_array[outer][inner]
 
-    def remove(self, index):
+    def remove(self, index: int) -> Any:
+        """
+        Удаление элемента
+        """
         outer, inner = self.get_indexes(index)
-        element = self.get(index)
+        element: Any = self.get(index)
 
         del self.container_array[outer][inner]
         self.container_array[outer].append(None)
@@ -168,9 +183,13 @@ class MatrixArray:
         return element
 
     def add(self, item: Any, index: int) -> None:
+        """
+        Добавление элемента в определенный индекс
+        """
         outer, inner = self.get_indexes(index)
-        container_array_copy = copy.deepcopy(self.container_array)
-        self.container_array = [[None for _ in range(self.array_size)]]
+        container_array_copy: List = copy.deepcopy(self.container_array)
+        self.container_array: List = [  # type: ignore
+            [None for _ in range(self.array_size)]]
         self.current_container_array_index = 0
 
         for i in range(len(container_array_copy)):

@@ -1,18 +1,30 @@
+from typing import Optional
+
 from otus.trees.bst import BST
 
 
 class AVL(BST):
+    """
+    Бинарное, сбалансированное дерево поиска
+    """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-    def insert(self, key):
+    def insert(self, key: int) -> None:
+        """
+        Основной метод вставки ноды
+        """
         if self.is_root:
             self._insert(key)
         else:
             root = self.move_to_root()
             root._insert(key)
 
-    def _insert(self, key):
+    def _insert(self, key: int) -> None:
+        """
+        Вставка ноды
+        """
         if key == self.key:
             self.values.append(key)
             return
@@ -33,14 +45,20 @@ class AVL(BST):
             else:
                 self.left._insert(key)
 
-    def search(self, key):
+    def search(self, key: int) -> Optional['BST']:
+        """
+        Основной метод поиска ноды
+        """
         if self.is_root:
             return self._search(key)
         else:
             root = self.move_to_root()
             return root._search(key)
 
-    def _search(self, key):
+    def _search(self, key: int) -> Optional['BST']:
+        """
+        Поиск ноды
+        """
         if key == self.key:
             return self
 
@@ -54,7 +72,10 @@ class AVL(BST):
                 return None
             return self.left._search(key)
 
-    def find_bad_balance(self):
+    def find_bad_balance(self) -> None:
+        """
+        Поиск ноды, которой нужна ребалансировка
+        """
         self.calculate_height()
 
         if self.parent is None:
@@ -68,32 +89,50 @@ class AVL(BST):
 
         self.parent.find_bad_balance()
 
-    def rebalance(self):
-        another_side_height = self.get_another_side_height()
-        left_children_height = 0 if not self.left else self.left.height
-        right_children_height = 0 if not self.right else self.right.height
+    def rebalance(self) -> None:
+        """
+        Ребалансировка
+        """
+        another_side_height: int = self.get_another_side_height()
+        left_children_height: int = 0 if not self.left else self.left.height
+        right_children_height: int = 0 if not self.right else self.right.height
 
+        # если нода справа относительно родителя
         if self.height > another_side_height and self.parent_side == "left":
+            # если высота левого ребенка больше или равна правой - малый поворот направо
             if left_children_height >= right_children_height:
                 self.small_right_rotation()
+            # если высота левого ребенка меньше правой - большой поворот направо
             elif left_children_height < right_children_height:
                 self.big_right_rotation()
 
+        # если нода слева относительно родителя
         elif self.height > another_side_height and self.parent_side == "right":
+            # если высота правого ребенка больше или равна левой - малый поворот налево
             if right_children_height >= left_children_height:
                 self.small_left_rotation()
+            # если высота правого ребенка меньше левой - большой поворот налево
             elif right_children_height < left_children_height:
                 self.big_left_rotation()
 
-    def big_right_rotation(self):
+    def big_right_rotation(self) -> None:
+        """
+        Большой поворот направо
+        """
         self.right.small_left_rotation()
         self.parent.small_right_rotation()
 
-    def big_left_rotation(self):
+    def big_left_rotation(self) -> None:
+        """
+        Большой поворот налево
+        """
         self.left.small_right_rotation()
         self.parent.small_left_rotation()
 
-    def small_right_rotation(self):
+    def small_right_rotation(self) -> None:
+        """
+        Маленький поворот направо
+        """
         if self.parent.parent:
             parent_side = self.parent.parent_side
 
@@ -116,7 +155,10 @@ class AVL(BST):
         self.calculate_height()
         self.right.calculate_height()
 
-    def small_left_rotation(self):
+    def small_left_rotation(self) -> None:
+        """
+        Маленький поворот налево
+        """
         if self.parent.parent:
             parent_side = self.parent.parent_side
 
@@ -140,20 +182,29 @@ class AVL(BST):
         self.calculate_height()
 
     @property
-    def need_rebalance(self):
+    def need_rebalance(self) -> bool:
+        """
+        Необходима ли ребалансировка
+        """
         another_side_height = self.get_another_side_height()
         return all(
             False for i in [1, -1, 0] if i == self.height - another_side_height
         )
 
-    def get_another_side(self):
+    def get_another_side(self) -> Optional['AVL']:
+        """
+        Получение брата
+        """
         if self.key > self.parent.key:
             another_side = self.parent.left
         else:
             another_side = self.parent.right
         return another_side
 
-    def get_another_side_height(self):
+    def get_another_side_height(self) -> int:
+        """
+        Высота брата
+        """
         another_side = self.get_another_side()
         if another_side:
             another_side_height = another_side.height

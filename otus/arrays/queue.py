@@ -1,34 +1,63 @@
-class QueueKnownProirity:
-    def __init__(self, priority):
-        self.priority = priority
-        self.container_array = [[] for _ in range(priority)]
+from typing import List, Any, Tuple
 
-    def dequeue(self):
+
+class QueueKnownProirity:
+    """
+    Очередь с известным приоритетом.
+
+    Высший приоритет имеют меньшие числа.
+    """
+
+    def __init__(self, priority):
+        self.priority: int = priority
+        self.container_array: List[List[Any]] = [[] for _ in range(priority)]
+
+    def dequeue(self) -> Any:
+        """
+        Удаление элемента
+        """
         for i in range(len(self.container_array)):
             if self.container_array[i]:
                 for j in range(len(self.container_array[i])):
-                    res = self.container_array[i][j]
+                    res: Any = self.container_array[i][j]
                     del self.container_array[i][j]
                     return res
             continue
 
-    def enqueue(self, priority, item):
-        priority_array = self.container_array[priority]
+    def enqueue(self, priority: int, item: Any) -> None:
+        """
+        Добавление элемента
+        """
+        priority_array: List = self.container_array[priority]
         priority_array.append(item)
 
 
 class QueueUnknownPriority:
-    def __init__(self):
-        self.array = []
+    """
+    Очередь с не известным приоритетом.
 
-    def dequeue(self):
+    Высший приоритет имеют буквы начала алфавита.
+    """
+
+    def __init__(self):
+        self.array: List = []
+
+    def dequeue(self) -> Any:
+        """
+        Удаление элемента
+        """
         if self.array:
             for i in range(len(self.array)):
-                res = self.array[i]
+                res: Any = self.array[i]
                 del self.array[i]
                 return res
 
-    def enqueue(self, priority_and_item):
+    def enqueue(self, priority_and_item: Tuple[str, Any]) -> None:
+        """
+        Добавление элемента
+        """
+        priority_and_item[0].lower()
+
         if not self.array:
             self.array.append(priority_and_item)
             return

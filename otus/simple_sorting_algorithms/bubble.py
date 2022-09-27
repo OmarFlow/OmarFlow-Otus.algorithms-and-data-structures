@@ -1,6 +1,11 @@
-def bubble_sort(array):
+from typing import List
+
+
+def bubble_sort(array: List) -> List:
     """
     Сортировка пузырьком
+
+    Сложность - квадратичная. Стабильный. Адаптивный. Не онлайн.
     """
     for i in range(len(array)):
         swapped = False
@@ -16,20 +21,3 @@ def bubble_sort(array):
         if not swapped:
             break
     return array
-
-
-if __name__ == "__main__":
-    from random import randint
-    from timeit import default_timer as timer
-
-    a = [randint(1, 1000000) for _ in range(100)]
-    b = [randint(1, 1000000) for _ in range(1000)]
-    c = [randint(1, 1000000) for _ in range(10000)]
-    d = [randint(1, 1000000) for _ in range(100000)]
-    e = [randint(1, 1000000) for _ in range(1000000)]
-
-    for i in a, b, c, d, e:
-        start = timer()
-        bubble_sort(i)
-        end = timer()
-        print(end - start)

@@ -1,20 +1,30 @@
 from random import randint
+from typing import Optional
+
 from otus.trees.avl import AVL
 
 
 class SplayTree(AVL):
     """
-    Расширяющееся дерево
+    Расширяющееся дерево.
+
+    Нода перемещается в корень при добавлении и поиске
     """
 
-    def insert(self, key):
+    def insert(self, key: int) -> None:
+        """
+        Основной метод вставки ноды
+        """
         if self.is_root:
             self._insert(key)
         else:
             root = self.move_to_root()
             root._insert(key)
 
-    def _insert(self, key):
+    def _insert(self, key: int) -> None:
+        """
+        Вставка ноды
+        """
         if key == self.key:
             self.values.append(key)
             return
@@ -35,14 +45,20 @@ class SplayTree(AVL):
             else:
                 self.left._insert(key)
 
-    def search(self, key):
+    def search(self, key: int) -> Optional['SplayTree']:
+        """
+        Основной метод поиска ноды
+        """
         if self.is_root:
             return self._search(key)
         else:
             root = self.move_to_root()
             return root._search(key)
 
-    def _search(self, key):
+    def _search(self, key: int) -> Optional['SplayTree']:
+        """
+        Поиск ноды
+        """
         if key == self.key:
             self.rebalance_st()
             return self
@@ -57,7 +73,10 @@ class SplayTree(AVL):
                 return None
             return self.left._search(key)
 
-    def rebalance_st(self):
+    def rebalance_st(self) -> None:
+        """
+        Ребалансировка
+        """
         if self.is_root:
             return
         if self.parent_side == "right":
@@ -69,19 +88,27 @@ class SplayTree(AVL):
 
 class RandTree(AVL):
     """
-    Рандомизированное дерево
+    Рандомизированное дерево.
+
+    Нода рандомно перемещается в корень при добавлении и поиске.
     """
 
-    size = 1
+    size: int = 1
 
-    def insert(self, key):
+    def insert(self, key: int) -> None:
+        """
+        Основной метод вставки ноды
+        """
         if self.is_root:
             self._insert(key)
         else:
             root = self.move_to_root()
             root._insert(key)
 
-    def _insert(self, key):
+    def _insert(self, key: int) -> None:
+        """
+        Вставка ноды
+        """
         if key == self.key:
             self.values.append(key)
             return
@@ -106,16 +133,23 @@ class RandTree(AVL):
             else:
                 self.left._insert(key)
 
-    def search(self, key):
+    def search(self, key: int) -> Optional['RandTree']:
+        """
+        Основной метод поиска ноды
+        """
         if self.is_root:
             return self._search(key)
         else:
             root = self.move_to_root()
             return root._search(key)
 
-    def _search(self, key):
+    def _search(self, key: int) -> Optional['RandTree']:
+        """
+        Поиск ноды
+        """
         if key == self.key:
-            self.rebalance_srt()
+            if randint(1, 100) % RandTree.size == 0:
+                self.rebalance_srt()
             return self
 
         if key > self.key:
@@ -128,7 +162,10 @@ class RandTree(AVL):
                 return None
             return self.left._search(key)
 
-    def rebalance_srt(self):
+    def rebalance_srt(self) -> None:
+        """
+        Ребалансировка
+        """
         if self.is_root:
             return
         if self.parent_side == "right":
@@ -137,7 +174,10 @@ class RandTree(AVL):
             self.small_right_rotation()
         self.rebalance_srt()
 
-    def remove(self, key):
+    def remove(self, key: int) -> Optional['RandTree']:
+        """
+        Удаление ноды
+        """
         res = super().remove(key)
         RandTree.size -= 1
         return res

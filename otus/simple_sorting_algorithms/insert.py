@@ -1,4 +1,12 @@
-def insert_sort(array):
+from typing import List, Optional, Any
+
+
+def insert_sort(array: List) -> List:
+    """
+    Сортировка вставкой
+
+    Сложность - квадратичная. Стабильный. Адаптивный. Онлайн.
+    """
     for i in range(1, len(array)):
         j = i - 1
         while j >= 0 and array[j] > array[j + 1]:
@@ -9,7 +17,10 @@ def insert_sort(array):
     return array
 
 
-def binary_search(num, mas):
+def binary_search(num: int, mas: List) -> Optional[int]:  # type: ignore
+    """
+    Бинарный поиск индекса для вставки
+    """
     low = 0
     high = len(mas) - 1
     if num <= mas[0]:
@@ -18,7 +29,7 @@ def binary_search(num, mas):
         return len(mas) - 1
 
     while low <= high:
-        mid = (low + high) // 2
+        mid: int = (low + high) // 2
         if mas[mid - 1] <= num <= mas[mid + 1]:
             if num > mas[mid]:
                 return mid + 1
@@ -31,10 +42,13 @@ def binary_search(num, mas):
             high = mid - 1
 
 
-def optimized_insert_sort(array):
+def optimized_insert_sort(array: List) -> List:
+    """
+    Нахождение индекса вставки в отсортированную часть за логарифмическое время
+    """
     for i in range(1, len(array)):
         j = i - 1
-        sorted_part = array[:i]
+        sorted_part: List = array[:i]
         if len(sorted_part) < 3:
             while j >= 0 and array[j] > array[j + 1]:
                 m = array[j + 1]
@@ -42,25 +56,8 @@ def optimized_insert_sort(array):
                 array[j] = m
                 j -= 1
         else:
-            k = binary_search(array[i], sorted_part)
-            value = array[i]
+            k: Optional[int] = binary_search(array[i], sorted_part)
+            value: Any = array[i]
             del array[i]
-            array.insert(k, value)
+            array.insert(k, value)  # type: ignore
     return array
-
-
-if __name__ == "__main__":
-    from random import randint
-    from timeit import default_timer as timer
-
-    a = [randint(1, 1000000) for _ in range(100)]
-    b = [randint(1, 1000000) for _ in range(1000)]
-    c = [randint(1, 1000000) for _ in range(10000)]
-    d = [randint(1, 1000000) for _ in range(100000)]
-    e = [randint(1, 1000000) for _ in range(1000000)]
-
-    for i in a, b, c, d, e:
-        start = timer()
-        optimized_insert_sort(i)
-        end = timer()
-        print(end - start)

@@ -1,12 +1,27 @@
-class QuickSort:
-    def __init__(self, array):
-        self.array = array
+from typing import List
 
-    def sorting(self):
+
+class QuickSort:
+    """
+    Быстрая сортировка
+
+    Сложность - nlogn. Не стабильный. Не адаптивный. Не онлайн.
+    """
+
+    def __init__(self, array: List):
+        self.array: List = array
+
+    def sorting(self) -> List:
+        """
+        Основной метод сортировки
+        """
         self.sort(0, len(self.array) - 1)
         return self.array
 
-    def sort(self, left, right):
+    def sort(self, left, right) -> None:
+        """
+        Сортировка
+        """
         if left >= right:
             return
 
@@ -14,7 +29,12 @@ class QuickSort:
         self.sort(left, x - 1)
         self.sort(x + 1, right)
 
-    def split(self, left, right):
+    def split(self, left: int, right: int) -> int:
+        """
+        Разделение.
+
+        В левой части элементы меньше опорного(pivot), в правой - больше.
+        """
         pivot = self.array[right]
         m = left - 1
 
@@ -24,24 +44,10 @@ class QuickSort:
                 self.swap(m, i)
         return m
 
-    def swap(self, index1, index2):
+    def swap(self, index1: int, index2: int) -> None:
+        """
+        Перемещение элементов
+        """
         cell = self.array[index1]
         self.array[index1] = self.array[index2]
         self.array[index2] = cell
-
-
-if __name__ == "__main__":
-    from random import randint
-    from timeit import default_timer as timer
-
-    a = [randint(1, 1000000) for _ in range(100)]
-    b = [randint(1, 1000000) for _ in range(1000)]
-    c = [randint(1, 1000000) for _ in range(10000)]
-    d = [randint(1, 1000000) for _ in range(100000)]
-    e = [randint(1, 1000000) for _ in range(1000000)]
-
-    for i in a, b, c, d, e:
-        start = timer()
-        QuickSort(i).sorting()
-        end = timer()
-        print(end - start)

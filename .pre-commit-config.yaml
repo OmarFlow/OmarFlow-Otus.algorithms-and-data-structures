@@ -12,4 +12,4 @@ repos:
   rev: fde4bb9
   hooks:
     - id: mypy
-      #files: "otus/hash_tables/chain"
+      exclude: "otus/trees/"
