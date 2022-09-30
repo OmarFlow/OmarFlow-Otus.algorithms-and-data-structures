@@ -150,7 +150,7 @@ class BTree:
             # если нода - не лист
             self.remove_item_from_not_leaf_node(item)
 
-    def remove_item_from_not_leaf_node(self, item: BtreeNodeItem):
+    def remove_item_from_not_leaf_node(self, item: BtreeNodeItem) -> None:
         """
         Удаление элемента из не листовой ноды
         """

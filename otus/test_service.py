@@ -1,3 +1,5 @@
+# система тестирования, основанная на файлах
+
 import glob
 from timeit import default_timer as timer
 
