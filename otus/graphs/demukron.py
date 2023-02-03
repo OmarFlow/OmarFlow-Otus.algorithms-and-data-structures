@@ -31,7 +31,7 @@ class OrGraph:
 
     def demukron_sorting(self) -> List[Tuple[int, OrGraphNode]]:
         """
-        Топологическая сортировка демукрона
+        Топологическая сортировка Демукрона
         """
         graph = copy(self.graph)
         res = []
