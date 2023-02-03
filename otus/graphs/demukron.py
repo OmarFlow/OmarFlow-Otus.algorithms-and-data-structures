@@ -3,7 +3,7 @@ from typing import List, Tuple
 from collections import defaultdict
 
 
-class GraphNode:
+class OrGraphNode:
     def __init__(self):
         self.incoming = []
         self.outgoing = []
@@ -16,9 +16,9 @@ class GraphNode:
         return len(self.incoming)
 
 
-class Graph:
+class OrGraph:
     def __init__(self):
-        self.graph = defaultdict(GraphNode)
+        self.graph = defaultdict(OrGraphNode)
         self.root = self.graph[0]
 
     def add_edge(self, from_vertex: int, to_vertex: int, direction: str) -> None:
@@ -29,7 +29,7 @@ class Graph:
         getattr(self.graph[from_vertex], direction).append(to_vertex)
         getattr(self.graph[to_vertex], another_direction).append(from_vertex)
 
-    def demukron(self) -> List[Tuple[int, GraphNode]]:
+    def demukron_sorting(self) -> List[Tuple[int, OrGraphNode]]:
         """
         Топологическая сортировка демукрона
         """
@@ -78,7 +78,7 @@ class Graph:
     #     return res
 
 
-# g = Graph()
+# g = OrGraph()
 # g.add_edge(0, 1, "outgoing")
 #
 # g.add_edge(1, 2, "outgoing")
