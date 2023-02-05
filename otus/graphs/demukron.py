@@ -39,15 +39,16 @@ class OrGraph:
 
         while any(i.half_incoming_degree != 0 for i in copy(graph).values()):
             for key, value in copy(graph).items():
+                # ищем верщины с 0ой степенью входа и добавляем их в список
                 if value.half_incoming_degree == 0:
                     work.extend(value.outgoing)
                     res.append((key, value))
                     del graph[key]
-
+            # у всех вершин, на которые ссылались вершины с 0ой степенью сокращаем степень входа
             for key in work:
                 graph[key].incoming.pop()
             work.clear()
-
+        # добавляем последние вершины
         for key, value in graph.items():
             res.append((key, value))
 

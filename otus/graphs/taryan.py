@@ -10,7 +10,6 @@ class OrGraphNode:
 class OrGraph:
     def __init__(self):
         self.graph = defaultdict(OrGraphNode)
-        self.root = self.graph[0]
         self.res = []
 
     def add_edge(self, from_vertex: int, to_vertex: int, direction: str) -> None:
@@ -38,7 +37,7 @@ class OrGraph:
 
         if item.outgoing:
             for vertex in item.outgoing:
-                self.demukron_sorting(vertex)
+                self.sort(vertex)
 
         if key not in self.res:
             self.res.append(key)
