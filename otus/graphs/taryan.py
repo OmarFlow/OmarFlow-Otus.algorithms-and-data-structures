@@ -1,4 +1,5 @@
 from collections import defaultdict
+from random import choice
 
 
 class OrGraphNode:
@@ -28,8 +29,6 @@ class OrGraph:
         """
         Топологическая сортировка Тарьяна
         """
-        from random import choice
-
         if key:
             item = self.graph[key]
         else:
