@@ -1,5 +1,6 @@
-from collections import defaultdict
+from typing import List
 from random import choice
+from collections import defaultdict
 
 
 class OrGraphNode:
@@ -22,15 +23,18 @@ class OrGraph:
         getattr(self.graph[from_vertex], direction).append(to_vertex)
         getattr(self.graph[to_vertex], another_direction).append(from_vertex)
 
-    def taryan_sorting(self) -> None:
-        not_vivisted_vertexes = self.graph.keys() - self.check_vertex_map
-        while len(not_vivisted_vertexes) != len(self.sorted_vertexes):
-            self.sort()
-        return self.sorted_vertexes
-
-    def sort(self, key=None) -> None:
+    def taryan_sorting(self) -> List[int]:
         """
         Топологическая сортировка Тарьяна
+        """
+        not_vivisted_vertexes = self.graph.keys() - self.check_vertex_map
+        while len(not_vivisted_vertexes) != len(self.sorted_vertexes):
+            self.traversal_graph()
+        return self.sorted_vertexes
+
+    def traversal_graph(self, key=None) -> None:
+        """
+        Обход графа
         """
         if key:
             vertex = self.graph[key]
@@ -38,8 +42,8 @@ class OrGraph:
             key, vertex = choice(list(self.graph.items()))
 
         if vertex.outgoing:
-            for vertex in vertex.outgoing:
-                self.sort(vertex)
+            for key_ in vertex.outgoing:
+                self.traversal_graph(key_)
 
         if key not in self.check_vertex_map:
             self.sorted_vertexes.append(key)
