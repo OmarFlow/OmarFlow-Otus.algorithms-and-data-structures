@@ -4,12 +4,18 @@ from collections import defaultdict
 
 
 class OrGraphNode:
+    """
+    Вершина/нода графа
+    """
     def __init__(self):
         self.incoming = []
         self.outgoing = []
 
 
 class OrGraph:
+    """
+    Ориентированный граф
+    """
     def __init__(self):
         self.graph = defaultdict(OrGraphNode)
         self.sorted_vertexes = []
